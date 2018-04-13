@@ -55,7 +55,6 @@ int main(void) {
   const auto iv = decode_b64(b64_iv);
   EVP_DecryptInit_ex(ctx, nullptr, nullptr, key.data(), iv.data());
   int len;
-  EVP_DecryptUpdate(ctx, nullptr, &len, nullptr, ct.size());
   std::array<uint8_t, 128> plaintext{{0}};
   EVP_DecryptUpdate(ctx, plaintext.data(), &len, ct.data(), ct.size());
 
