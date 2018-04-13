@@ -58,11 +58,15 @@ int main(void) {
   std::array<uint8_t, 128> plaintext{{0}};
   EVP_DecryptUpdate(ctx, plaintext.data(), &len, ct.data(), ct.size());
 
-  std::cout << len << " \'";
-  for (uint8_t c : plaintext) {
-    std::cout << c;
+  if (EVP_DecryptFinal(ctx, plaintext.data() + len, &len) <= 0) {
+    std::cerr << "Decoding error\n";
+  } else {
+    std::cout << "Message: ";
+    for (uint8_t c : plaintext) {
+      std::cout << c;
+    }
+    std::cout << "'\n";
   }
-  std::cout << "'\n";
 
   EVP_CIPHER_CTX_free(ctx);
   return 0;
